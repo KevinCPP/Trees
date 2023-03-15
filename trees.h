@@ -3,6 +3,7 @@
 
 #include <concepts>
 #include <iostream>
+#include <iomanip>
 
 //trees namespace
 namespace Trees {
@@ -34,28 +35,48 @@ namespace Trees {
         };
         
         //generic print function for trees
-        void print(Node* root){
-            
+        template <std::totally_ordered T>
+        void print(Node<T>* root, size_t level = 0, uint8_t indent = 4){
+            if(root == nullptr){
+                //std::cout << "Tree is empty" << std::endl;
+                return;
+            }
+
+            printTree(root->right, level + 1, indent);
+            std::cout << std::setw(indent * level) << " ";
+            std::cout << root->value << std::endl;
+            printTree(root->left, level + 1, indent);
         }
 
         //generic height calculation function for trees
-        void height(Node* root){
-            
+        template <std::totally_ordered T>
+        size_t height(Node<T>* root){
+            //height of an empty tree is -1
+            if(root == nullptr)
+                return -1;
+
+            //recursively find height of l/r nodes
+            size_t l = height(root->left);
+            size_t r = height(root->right);
+
+            //return the maximum height
+            return (1 + (l > r ? l : r));
         }
 
         //generic clear function for trees
-        void clear(Node* root){
-            if(!root)
+        template <std::totally_ordered T>
+        void clear(Node<T>* root){
+            //return and do nothing if it's null
+            if(root == nullptr)
                 return;
 
-            if(root->left)
-                clear(root->left);
-            
+            //if it's not null, clear the children
+            clear(root->left);
+            clear(root->right);
 
-            if(root->right)
-                clear(root->right);
-
-
+            //finally, delete and set to nullptr
+            delete root;
+            root = nullptr;
         }
     }
 

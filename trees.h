@@ -4,8 +4,10 @@
 #include <concepts>
 #include <iostream>
 
+//trees namespace
 namespace Trees {
-    
+
+    //anonymous namespace to contain abstract and node classes, making them inaccessible elsewhere
     namespace {
         //abstract class that contains methods required for all tree types to implement
         template <std::totally_ordered T>
@@ -31,6 +33,30 @@ namespace Trees {
             Node(const T& v) : value(v), left(nullptr), right(nullptr) {}
         };
         
+        //generic print function for trees
+        void print(Node* root){
+            
+        }
+
+        //generic height calculation function for trees
+        void height(Node* root){
+            
+        }
+
+        //generic clear function for trees
+        void clear(Node* root){
+            if(!root)
+                return;
+
+            if(root->left)
+                clear(root->left);
+            
+
+            if(root->right)
+                clear(root->right);
+
+
+        }
     }
 
     //binary search tree
@@ -42,7 +68,7 @@ namespace Trees {
     public:
         BinarySearchTree() : root(nullptr) {}
         ~BinarySearchTree(){
-            clear;
+            clear();
         }
 
         //returns true if the tree contains value
@@ -53,7 +79,10 @@ namespace Trees {
 
         //inserts value into the tree
         void insert(const T& value){
-            
+            if(!root) {
+                root = new Node<T>;
+                root->value = value;
+            }
         }
 
         //removes value from the tree

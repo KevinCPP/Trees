@@ -4,89 +4,114 @@
 #include <concepts>
 #include <iostream>
 
-template <std::totally_ordered T>
-class Tree {
-public:
-    virtual ~Tree() {}
+namespace Trees {
+    
+    namespace {
+        //abstract class that contains methods required for all tree types to implement
+        template <std::totally_ordered T>
+        class Tree {
+        public:
+            //constructor
+            virtual ~Tree() {}
 
-    //member functions to be implemented by each tree
-    virtual bool contains(const T& value) const = 0;
-    virtual void insert(const T& value) = 0;
-    virtual void remove(const T& value) = 0;
-    virtual void print() const = 0;
-    virtual void clear() = 0;
-};
+            //member functions to be implemented by each tree
+            virtual bool contains(const T& value) const = 0;
+            virtual void insert(const T& value) = 0;
+            virtual void remove(const T& value) = 0;
+            virtual void print() const = 0;
+            virtual void clear() = 0;
+        };
 
-template <std::totally_ordered T>
-struct Node {
-    T value;
-    Node* left;
-    Node* right;
-    Node(const T& v) : value(v), left(nullptr), right(nullptr) {}
-};
-
-template <std::totally_ordered T>
-class BinarySearchTree : public Tree<T> {
-private:
-    Node<T> *root;
-
-public:
-    BinarySearchTree() : root(nullptr) {}
-    ~BinarySearchTree();
-
-    bool contains(const T& value) const {
+        //this will be used as the node object
+        template <std::totally_ordered T>
+        struct Node {
+            T value;
+            Node* left;
+            Node* right;
+            Node(const T& v) : value(v), left(nullptr), right(nullptr) {}
+        };
         
-        return false;
     }
 
-    void insert(const T& value){
+    //binary search tree
+    template <std::totally_ordered T>
+    class BinarySearchTree : public Tree<T> {
+    private:
+        Node<T> *root;
 
-    }
+    public:
+        BinarySearchTree() : root(nullptr) {}
+        ~BinarySearchTree(){
+            clear;
+        }
 
-    void remove(const T& value){
+        //returns true if the tree contains value
+        bool contains(const T& value) const {
+            
+            return false;
+        }
 
-    }
+        //inserts value into the tree
+        void insert(const T& value){
+            
+        }
 
-    void print() const {
+        //removes value from the tree
+        void remove(const T& value){
 
-    }
+        }
 
-    void clear(){
+        //prints the tree
+        void print() const {
 
-    }
+        }
 
-};
+        //clears the tree
+        void clear(){
 
-template <std::totally_ordered T>
-class RedBlackTree : public Tree<T> {
-private:
-    Node<T> *root;
+        }
 
-public:
-    RedBlackTree() : root(nullptr) {}
-    ~RedBlackTree();
+    };
 
-    bool contains(const T& value) const {
-        
-        return false;
-    }
+    //red black tree
+    template <std::totally_ordered T>
+    class RedBlackTree : public Tree<T> {
+    private:
+        Node<T> *root;
 
-    void insert(const T& value){
+    public:
+        RedBlackTree() : root(nullptr) {}
+        ~RedBlackTree(){
+            clear();
+        }
 
-    }
+        //returns true if the tree contains value
+        bool contains(const T& value) const {
+            
+            return false;
+        }
 
-    void remove(const T& value){
+        //inserts value into the tree
+        void insert(const T& value){
 
-    }
+        }
 
-    void print() const {
+        //removes value from the tree
+        void remove(const T& value){
 
-    }
+        }
 
-    void clear(){
+        //prints the tree
+        void print() const {
 
-    }
+        }
 
-};
+        //clears the tree
+        void clear(){
+
+        }
+    };
+
+}
 
 #endif

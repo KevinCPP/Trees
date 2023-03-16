@@ -95,6 +95,17 @@ namespace Trees {
     class BinarySearchTree : public Tree<T> {
     private:
         Node<T> *root;
+        
+        Node<T>* insertHelper(Node<T> *r, const T& value) {
+            if(r == nullptr)
+                return new Node<T>(value);
+            else if(value < r->value)
+                node->left = insertHelper(node->left, value);
+            else if(value > r->value)
+                node->right = insertHelper(node->right, value);
+
+            return r;
+        }
 
     public:
         BinarySearchTree() : root(nullptr) {}
@@ -110,10 +121,7 @@ namespace Trees {
 
         //inserts value into the tree
         void insert(const T& value) override {
-            if(!root) {
-                root = new Node<T>;
-                root->value = value;
-            }
+            root = insertHelper(root, value);
         }
 
         //removes value from the tree

@@ -10,21 +10,6 @@ namespace Trees {
 
     //anonymous namespace to contain abstract and node classes, making them inaccessible elsewhere
     namespace {
-        //abstract class that contains methods required for all tree types to implement
-        template <std::totally_ordered T>
-        class Tree {
-        public:
-            //constructor
-            virtual ~Tree() {}
-
-            //member functions to be implemented by each tree
-            virtual bool contains(const T& value) const = 0;
-            virtual void insert(const T& value) = 0;
-            virtual void remove(const T& value) = 0;
-            virtual void print() const = 0;
-            virtual void clear() = 0;
-        };
-
         //this will be used as the node object
         template <std::totally_ordered T>
         struct Node {
@@ -33,51 +18,76 @@ namespace Trees {
             Node* right;
             Node(const T& v) : value(v), left(nullptr), right(nullptr) {}
         };
-        
-        //generic print function for trees
+
+        //abstract class that contains methods required for all tree types to implement
         template <std::totally_ordered T>
-        void print(Node<T>* root, size_t level = 0, uint8_t indent = 4){
-            if(root == nullptr){
-                //std::cout << "Tree is empty" << std::endl;
-                return;
+        class Tree {
+        private:
+            Node<T> *root;
+
+        public:
+            //constructor
+            virtual ~Tree() {}
+
+            //member functions to be implemented by each tree
+            virtual bool contains(const T& value) const = 0;
+            virtual void insert(const T& value) = 0;
+            virtual void remove(const T& value) = 0;
+           
+            virtual size_t getHeight() const {
+                return height(root);
             }
 
-            printTree(root->right, level + 1, indent);
-            std::cout << std::setw(indent * level) << " ";
-            std::cout << root->value << std::endl;
-            printTree(root->left, level + 1, indent);
-        }
+            virtual void printTree() const {
+                print(root);
+            }
+            
+            virtual void clearTree() {
+                clear(root);
+            }
 
-        //generic height calculation function for trees
-        template <std::totally_ordered T>
-        size_t height(Node<T>* root){
-            //height of an empty tree is -1
-            if(root == nullptr)
-                return -1;
+        protected:
+            void print(Node<T> *root, size_t level = 0, uint8_t indent = 4) {
+                if(root == nullptr){
+                    //std::cout << "Tree is empty" << std::endl;
+                    return;
+                }
 
-            //recursively find height of l/r nodes
-            size_t l = height(root->left);
-            size_t r = height(root->right);
+                printTree(root->right, level + 1, indent);
+                std::cout << std::setw(indent * level) << " ";
+                std::cout << root->value << std::endl;
+                printTree(root->left, level + 1, indent); 
+            }
 
-            //return the maximum height
-            return (1 + (l > r ? l : r));
-        }
+            virtual size_t height(Node<T> *root) {
+                //height of an empty tree is -1
+                if(root == nullptr)
+                    return -1;
 
-        //generic clear function for trees
-        template <std::totally_ordered T>
-        void clear(Node<T>* root){
-            //return and do nothing if it's null
-            if(root == nullptr)
-                return;
+                //recursively find height of l/r nodes
+                size_t l = height(root->left);
+                size_t r = height(root->right);
 
-            //if it's not null, clear the children
-            clear(root->left);
-            clear(root->right);
+                //return the maximum height
+                return (1 + (l > r ? l : r));
+            }
 
-            //finally, delete and set to nullptr
-            delete root;
-            root = nullptr;
-        }
+            virtual void clear(Node<T> *root) {
+                //return and do nothing if it's null
+                if(root == nullptr)
+                    return;
+
+                //if it's not null, clear the children
+                clear(root->left);
+                clear(root->right);
+
+                //finally, delete and set to nullptr
+                delete root;
+                root = nullptr;
+            } 
+
+        };
+
     }
 
     //binary search tree
@@ -89,17 +99,17 @@ namespace Trees {
     public:
         BinarySearchTree() : root(nullptr) {}
         ~BinarySearchTree(){
-            clear();
+            clear(root);
         }
 
         //returns true if the tree contains value
-        bool contains(const T& value) const {
+        bool contains(const T& value) const override {
             
             return false;
         }
 
         //inserts value into the tree
-        void insert(const T& value){
+        void insert(const T& value) override {
             if(!root) {
                 root = new Node<T>;
                 root->value = value;
@@ -107,17 +117,7 @@ namespace Trees {
         }
 
         //removes value from the tree
-        void remove(const T& value){
-
-        }
-
-        //prints the tree
-        void print() const {
-
-        }
-
-        //clears the tree
-        void clear(){
+        void remove(const T& value) override {
 
         }
 
@@ -132,32 +132,21 @@ namespace Trees {
     public:
         RedBlackTree() : root(nullptr) {}
         ~RedBlackTree(){
-            clear();
+            clear(root);
         }
 
         //returns true if the tree contains value
-        bool contains(const T& value) const {
+        bool contains(const T& value) const override {
             
             return false;
         }
 
         //inserts value into the tree
-        void insert(const T& value){
-
+        void insert(const T& value) override{
+            
         }
 
-        //removes value from the tree
-        void remove(const T& value){
-
-        }
-
-        //prints the tree
-        void print() const {
-
-        }
-
-        //clears the tree
-        void clear(){
+        void remove(const T& value) override {
 
         }
     };

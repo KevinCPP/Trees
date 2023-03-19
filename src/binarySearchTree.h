@@ -108,11 +108,11 @@ namespace Trees {
             Tree<T>::print(root, 4);
         }
 
-        virtual ptrdiff_t getHeight() const {
+        ptrdiff_t getHeight() const {
             return Tree<T>::height(root);
         }
 
-        virtual void clearTree() {
+        void clearTree() {
             Tree<T>::clear(root);
         }
     };

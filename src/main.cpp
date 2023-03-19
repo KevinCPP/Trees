@@ -9,15 +9,20 @@
 #include "../test/tests.h"
 void unitTests() {
     //Tests::binarySearchTree_printTest();
-    Tests::binarySearchTree_runAllTests();
+//    Tests::binarySearchTree_runAllTests();
 }
 
 
 using namespace std;
 
 int main(){
+    
+    Trees::RedBlackTree<int> t;
+
     unitTests();
     return 0;
+
+
 
 //    Trees::BinarySearchTree<int> t;
     

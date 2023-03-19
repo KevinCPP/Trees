@@ -11,10 +11,13 @@ namespace Trees {
     template <std::totally_ordered T>
     struct Node {
         T value;
-        Node* left;
-        Node* right;
-        Node(const T& v) : value(v), left(nullptr), right(nullptr) {}
-    };
+        bool color = false;
+        Node* left = nullptr;
+        Node* right = nullptr;
+        Node* parent = nullptr;
+        Node(const T& v) : value(v) {}
+        Node(const T& v, bool c) : value(v), color(c) {} 
+    }; 
 
     //abstract class that contains methods required for all tree types to implement
     template <std::totally_ordered T>

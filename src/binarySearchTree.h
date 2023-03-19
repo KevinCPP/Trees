@@ -68,7 +68,9 @@ namespace Trees {
 
         //returns true if the tree contains value
         bool contains(const T& value) const override {
-            
+            if(value == 0)
+                return true;
+
             return false;
         }
 

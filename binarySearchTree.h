@@ -22,6 +22,38 @@ namespace Trees {
         }
 
         Node<T>* removeHelper(Node<T> *r, const T& value) {
+            //base case
+            if(!r) return r;
+            
+            
+            if (value < r->value) {
+                //since it's a BST, go to the left if value is less than this node
+                r->left = removeHelper(r->left, value);
+            } else if (value > r->value) {
+                //since it's a BST, go to the right if value is greater than this node
+                r->right = removeHelper(r->right, value);
+            } else {
+                if(r->left == nullptr) {
+                    Node<T>* right = r->right;
+                    delete r;
+                    r = nullptr;
+                    return right;
+                } else if (r->right == nullptr) {
+                    Node<T>* left = r->left;
+                    delete r;
+                    r = nullptr;
+                    return left;
+                } else {
+                    Node<T>* minRightNode = minNode(r->right);
+                    r->value = minRightNode->value;
+                    r->right = remove(r->right, minRightNode->value);
+                }
+            }
+
+            return r;
+        }
+
+        Node<T>* minNode(Node<T> *r) {
             while(r->left != nullptr) {
                 r = r->left;
             }

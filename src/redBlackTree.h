@@ -144,7 +144,7 @@ namespace Trees {
                 gparent = parent->parent;
                 if(parent == gparent->left) {
                     Node<T>* uncle = gparent->right;
-                    if(uncle->color == RED) {
+                    if(uncle != nullptr && uncle->color == RED) {
                         uncle->color = BLACK;
                         parent->color = BLACK;
                         gparent->color = RED;
@@ -161,7 +161,7 @@ namespace Trees {
                     }
                 } else {
                     Node<T>* uncle = gparent->left;
-                    if(uncle->color == RED) {
+                    if(uncle != nullptr && uncle->color == RED) {
                         uncle->color = BLACK;
                         parent->color = BLACK;
                         gparent->color = RED;
@@ -242,7 +242,7 @@ namespace Trees {
 
         //inserts value into the tree
         void insert(const T& value) override{
-            Node<T>* node = new Node(value);
+            Node<T>* node = new Node(value, RED);
             root = BSTInsert(root, node);
             fixInsert(node);
         }
@@ -256,8 +256,12 @@ namespace Trees {
             }
         }
 
-        void printTree() const {
+        void printTree() {
             Tree<T>::print(root, 4);
+        }
+
+        ptrdiff_t getHeight() const {
+            return Tree<T>::height(root);
         }
 
         void clearTree() {

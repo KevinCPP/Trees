@@ -8,8 +8,10 @@
 //#ifdef UNIT_TEST
 #include "../test/tests.h"
 void unitTests() {
-    Tests::binarySearchTree_printTest();
+//    Tests::binarySearchTree_printTest();
 //    Tests::binarySearchTree_runAllTests();
+
+    Tests::redBlackTree_printTest();
 }
 
 

@@ -41,7 +41,7 @@ namespace Trees {
                 print(root->right, indent + 4);
             }
             
-            if(!root->color)
+            if(root->color)
                 std::cout << "\033[1;31m";
             
             std::cout << std::setw(indent) << ' ' << root->value;

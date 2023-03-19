@@ -22,7 +22,7 @@ $(PROGRAM): $(OBJS)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-test: $(TEST_OBJS) $(OBJS)
+unittest: $(TEST_OBJS) $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 clean:

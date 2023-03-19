@@ -9,7 +9,7 @@
 namespace Trees {
 
     //anonymous namespace to contain abstract and node classes, making them inaccessible elsewhere
-    namespace {
+//    namespace {
         //this will be used as the node object
         template <std::totally_ordered T>
         struct Node {
@@ -23,7 +23,7 @@ namespace Trees {
         template <std::totally_ordered T>
         class Tree {
         private:
-            Node<T> *root;
+            //Node<T> *root;
 
         public:
             //constructor
@@ -33,33 +33,26 @@ namespace Trees {
             virtual bool contains(const T& value) const = 0;
             virtual void insert(const T& value) = 0;
             virtual void remove(const T& value) = 0;
-           
-            virtual size_t getHeight() const {
-                return height(root);
-            }
-
-            virtual void printTree() const {
-                print(root);
-            }
-            
-            virtual void clearTree() {
-                clear(root);
-            }
-
         protected:
-            void print(Node<T> *root, size_t level = 0, uint8_t indent = 4) {
-                if(root == nullptr){
-                    //std::cout << "Tree is empty" << std::endl;
-                    return;
-                }
+            void print(Node<T> *root, uint32_t indent = 4) const {
+				if(root == nullptr){
+					//std::cout << "Tree is empty" << std::endl;
+					return;
+				}
 
-                printTree(root->right, level + 1, indent);
-                std::cout << std::setw(indent * level) << " ";
-                std::cout << root->value << std::endl;
-                printTree(root->left, level + 1, indent); 
-            }
+				if (root->right != nullptr) {
+					print(root->right, indent + 4);
+				}
 
-            virtual size_t height(Node<T> *root) {
+				std::cout << std::setw(indent) << ' ' << root->value << std::endl;
+
+				if (root->left != nullptr) {
+					print(root->left, indent + 4);
+				}
+			}
+
+
+            virtual size_t height(Node<T> *root) const {
                 //height of an empty tree is -1
                 if(root == nullptr)
                     return -1;
@@ -88,7 +81,7 @@ namespace Trees {
 
         };
 
-    }
+//    }
 }
 
 #endif

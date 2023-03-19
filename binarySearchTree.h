@@ -46,7 +46,7 @@ namespace Trees {
                 } else {
                     Node<T>* minRightNode = minNode(r->right);
                     r->value = minRightNode->value;
-                    r->right = remove(r->right, minRightNode->value);
+                    r->right = removeHelper(r->right, minRightNode->value);
                 }
             }
 
@@ -63,7 +63,7 @@ namespace Trees {
     public:
         BinarySearchTree() : root(nullptr) {}
         ~BinarySearchTree(){
-            clear(root);
+            Tree<T>::clear(root);
         }
 
         //returns true if the tree contains value
@@ -81,6 +81,20 @@ namespace Trees {
         void remove(const T& value) override {
             root = removeHelper(root, value);
         }
+
+        void printTree() {
+            Tree<T>::print(root, 4);
+        }
+
+        virtual size_t getHeight() const {
+            return Tree<T>::height(root);
+        }
+
+        virtual void clearTree() {
+            Tree<T>::clear(root);
+        }
+
+
 
     };
 

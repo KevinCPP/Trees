@@ -40,8 +40,12 @@ namespace Trees {
             if (root->right != nullptr) {
                 print(root->right, indent + 4);
             }
-
-            std::cout << std::setw(indent) << ' ' << root->value << std::endl;
+            
+            if(!root->color)
+                std::cout << "\033[1;31m";
+            
+            std::cout << std::setw(indent) << ' ' << root->value;
+            std::cout << "\033[0m" << std::endl;
 
             if (root->left != nullptr) {
                 print(root->left, indent + 4);

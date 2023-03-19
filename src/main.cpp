@@ -8,7 +8,7 @@
 //#ifdef UNIT_TEST
 #include "../test/tests.h"
 void unitTests() {
-    //Tests::binarySearchTree_printTest();
+    Tests::binarySearchTree_printTest();
 //    Tests::binarySearchTree_runAllTests();
 }
 
@@ -34,6 +34,5 @@ int main(){
 //    t.insert(15);
 
 //    t.printTree();
-
     return 0;
 }

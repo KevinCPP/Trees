@@ -1,8 +1,12 @@
 #ifndef TESTS_H
 #define TESTS_H
 
+#include <bits/stdc++.h>
+#include "../src/trees.h"
+#include "../src/redBlackTree.h"
+#include "../src/binarySearchTree.h"
+
 namespace Tests {
-    
     //run all tests
     void runAllTests();
 
@@ -23,7 +27,6 @@ namespace Tests {
     void redBlackTree_deleteTest();
     void redBlackTree_heightTest();
     void redBlackTree_printTest();
-
 }
 
 #endif

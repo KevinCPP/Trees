@@ -1,5 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -g -Wall -Wextra -Werror
+#CXXTESTFLAGS = -std=c++20 -g -D UNIT_TEST 
 
 SRC_DIR = src
 TEST_DIR = test

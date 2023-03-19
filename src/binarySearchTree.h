@@ -68,9 +68,29 @@ namespace Trees {
 
         //returns true if the tree contains value
         bool contains(const T& value) const override {
-            if(value == 0)
-                return true;
+            //node that will be used in the iterations
+            Node<T> *current = root;
 
+            //while the current node is not null
+            while (current) {
+                //if the value of the node is the one we are looking for,
+                //that means the tree contains it, we can stop here and return true
+                if (current->value == value) {
+                    return true;
+
+                //if the value is less than the current value, we'll go left since
+                //smaller values are always on the left in a binary search tree
+                } else if (value < current->value) {
+                    current = current->left;
+                
+                //if the value isn't less or equal, it must be greater, so we can
+                //just go to the right, since right = larger values in BST.
+                } else {
+                    current = current->right;
+                }
+            }
+            
+            //if it was not found in that loop, then it isn't in the tree
             return false;
         }
 
@@ -88,16 +108,13 @@ namespace Trees {
             Tree<T>::print(root, 4);
         }
 
-        virtual size_t getHeight() const {
+        virtual ptrdiff_t getHeight() const {
             return Tree<T>::height(root);
         }
 
         virtual void clearTree() {
             Tree<T>::clear(root);
         }
-
-
-
     };
 
 }

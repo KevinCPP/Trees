@@ -23,12 +23,14 @@ namespace Tests {
     }
 
     void binarySearchTree_runAllTests() {
-        std::cout << "the function was called" << std::endl;
+        const std::string testName = "binarySearchTree_runAllTests() ";
         binarySearchTree_containsTest();
         binarySearchTree_insertTest();
         binarySearchTree_deleteTest();
         binarySearchTree_heightTest();
         binarySearchTree_printTest();
+
+        std::cout << " *** " << testName << "complete! *** " << std::endl;
     }
 
     void binarySearchTree_containsTest() {
@@ -49,6 +51,8 @@ namespace Tests {
         
         std::cout << testName << "passed `contains element` checks!" << std::endl;
         test.clearTree();
+
+        std::cout << testName << "passed ALL CHECKS!" << std::endl;
     }
 
     void binarySearchTree_insertTest(){
@@ -94,7 +98,7 @@ namespace Tests {
             assert((void("nolonger contains sorted element after deletion"), !test.contains(i)));
         }
 
-        std::cout << testName << "passed all `insert/delete sorted elements` checks!" << std::endl;
+        std::cout << testName << "passed `insert/delete sorted elements` checks!" << std::endl;
         test.clearTree();
         
         //test that deletion works on all rsorted elements
@@ -105,7 +109,7 @@ namespace Tests {
             assert((void("nolonger contains rsorted element after deletion"), !test.contains(i)));
         }
 
-        std::cout << testName << "passed all `insert/delete rsorted elements` checks!" << std::endl;
+        std::cout << testName << "passed `insert/delete rsorted elements` checks!" << std::endl;
         test.clearTree();
         
         //test that deletion works on all perfect elements
@@ -116,8 +120,10 @@ namespace Tests {
             assert((void("nolonger contains perfect element after deletion"), !test.contains(i)));
         }
 
-        std::cout << testName << "passed all `insert/delete perfect elements` checks!" << std::endl;
+        std::cout << testName << "passed `insert/delete perfect elements` checks!" << std::endl;
         test.clearTree();
+
+        std::cout << testName << "passed ALL CHECKS!" << std::endl;
     }
 
     void binarySearchTree_heightTest() {
@@ -145,7 +151,7 @@ namespace Tests {
         std::cout << testName << "passed `height check on perfect elements` check!" << std::endl;
         test.clearTree();
 
-        std::cout << testName << "passed ALL HEIGHT CHECKS!" << std::endl;
+        std::cout << testName << "passed ALL CHECKS!" << std::endl;
     }
 
     void binarySearchTree_printTest() {

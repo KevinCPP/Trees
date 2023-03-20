@@ -3,9 +3,6 @@
 
 #include "trees.h"
 
-#define BLACK false
-#define RED true
-
 namespace Trees {
 
     template <typename T>
@@ -15,125 +12,14 @@ namespace Trees {
         b = temp;
     }
 
-//red black tree
     template <std::totally_ordered T>
     class RedBlackTree : public Tree<T> {
     private:
-        Node<T> *root;
+        Node<T> *root = nullptr;
+
+        //void insertHelper(Node<T>* node) {
         
-        Node<T>* BSTInsert(Node<T>*& r, Node<T>*& value) {
-            if(r == nullptr) {
-                return value;
-            } else if(value->value < r->value) {
-                r->left = BSTInsert(r->left, value);
-                r->left->parent = r;
-            } else if (value->value > r->value) {
-                r->right = BSTInsert(r->right, value);
-                r->right->parent = r;
-            }
-
-            return r;
-        }
-
-        Node<T>* BSTDelete(Node<T>*& r, const T& value) {
-			if (!r) {
-				return nullptr;
-			}
-
-			if (value < r->value) {
-				r->left = BSTDelete(r->left, value);
-				if (r->left) {
-				    r->left->parent = r;
-				}
-			} else if (value > r->value) {
-				r->right = BSTDelete(r->right, value);
-				if (r->right) {
-				    r->right->parent = r;
-				}
-			} else {
-				if (r->left == nullptr) {
-				    Node<T>* right = r->right;
-				    delete r;
-				    return right;
-				} else if (r->right == nullptr) {
-				    Node<T>* left = r->left;
-				    delete r;
-				    return left;
-				} else {
-				    Node<T>* minRightNode = minNode(r->right);
-				    r->value = minRightNode->value;
-				    r->right = BSTDelete(r->right, minRightNode->value);
-				    if (r->right) {
-				        r->right->parent = r;
-				    }
-				}
-			}
-
-			return r;
-		}
-
-        Node<T>* minNode(Node<T>* r) {
-            while(r->left != nullptr) {
-                r = r->left;
-            }
-
-            return r;
-        }
-
-        void fixDelete(Node<T>* node) {
-			while (node != root && node->color == BLACK) {
-				if (node == node->parent->left) {
-				    Node<T>* sibling = node->parent->right;
-				    if (sibling->color == RED) {
-				        sibling->color = BLACK;
-				        node->parent->color = RED;
-				        rotateLeft(node->parent);
-				        sibling = node->parent->right;
-				    }
-				    if (sibling->left->color == BLACK && sibling->right->color == BLACK) {
-				        sibling->color = RED;
-				        node = node->parent;
-				    } else {
-				        if (sibling->right->color == BLACK) {
-				            sibling->left->color = BLACK;
-				            sibling->color = RED;
-				            rotateRight(sibling);
-				            sibling = node->parent->right;
-				        }
-				        sibling->color = node->parent->color;
-				        node->parent->color = BLACK;
-				        sibling->right->color = BLACK;
-				        rotateLeft(node->parent);
-				        node = root;
-				    }
-				} else {
-				    Node<T>* sibling = node->parent->left;
-				    if (sibling->color == RED) {
-				        sibling->color = BLACK;
-				        node->parent->color = RED;
-				        rotateRight(node->parent);
-				        sibling = node->parent->left;
-				    }
-				    if (sibling->right->color == BLACK && sibling->left->color == BLACK) {
-				        sibling->color = RED;
-				        node = node->parent;
-				    } else {
-				        if (sibling->left->color == BLACK) {
-				            sibling->right->color = BLACK;
-				            sibling->color = RED;
-				            rotateLeft(sibling);
-				            sibling = node->parent->left;
-				        }
-				        sibling->color = node->parent->color;
-				        node->parent->color = BLACK;
-				        sibling->left->color = BLACK;
-				        rotateRight(node->parent);
-				        node = root;
-				    }
-				}
-			}
-			node->color = BLACK;
-		}
+        //}
 
         void fixInsert(Node<T>*& node) {
             Node<T>* parent = nullptr;
@@ -151,11 +37,11 @@ namespace Trees {
                         node = gparent;
                     } else {
                         if(node == parent->right) {
-                            rotateLeft(parent);
+                            leftRotate(parent);
                             node = parent;
                             parent = node->parent;
                         }
-                        rotateRight(gparent);
+                        rightRotate(gparent);
                         swap(parent->color, gparent->color);
                         node = parent;
                     }
@@ -168,11 +54,11 @@ namespace Trees {
                         node = gparent;
                     } else {
                         if (node == parent->left) {
-                            rotateRight(parent);
+                            rightRotate(parent);
                             node = parent;
                             parent = node->parent;
                         }
-                        rotateLeft(gparent);
+                        leftRotate(gparent);
                         swap(parent->color, gparent->color);
                         node = parent;
                     }
@@ -180,9 +66,72 @@ namespace Trees {
             }
 
             root->color = BLACK;
+        
         }
 
-        void rotateLeft(Node<T>*& node) {
+        void removeHelper(Node<T>* node) {
+            Node<T>* u = replaceBST(node);
+
+            bool bothBlack = ((u == nullptr || u->color == BLACK) && (node->color == BLACK));
+            Node<T>* parent = node->parent;
+
+            if (u == nullptr) {
+                if (node == root) {
+                    root = nullptr;
+                } else {
+                    if (bothBlack) {
+                        fixDoubleBlack(node);
+                    } else {
+                        if (node->getSibling() != nullptr)
+                            node->getSibling()->color = RED;
+                    }
+
+                    if (node == node->parent->left) {
+                        parent->left = nullptr;
+                    } else {
+                        parent->right = nullptr;
+                    }
+                }
+
+                delete node;
+                node = nullptr;
+                return;
+            }
+
+            if (node->left == nullptr || node->right == nullptr) {
+                if (node == root) {
+                    node->value = u->value;
+                    node->left = nullptr;
+                    node->right = nullptr;
+                    delete u;
+                    u = nullptr;
+                } else {
+                    if (node == node->parent->left) {
+                        parent->left = u;
+                    } else {
+                        parent->right = u;
+                    }
+
+                    delete node;
+                    node = nullptr;
+                    u->parent = parent;
+
+                    if(bothBlack) {
+                        fixDoubleBlack(u);
+                    } else {
+                        u->color = BLACK;
+                    }
+                }
+                
+                return;
+            }
+
+            swap(node->value, u->value);
+            removeHelper(u);
+        }
+
+
+        void leftRotate(Node<T>*& node) {
 			Node<T>* right = node->right;
 			node->right = right->left;
 			if (right->left != nullptr) {
@@ -200,7 +149,7 @@ namespace Trees {
 			node->parent = right;
 		}
 
-        void rotateRight(Node<T>*& node) {
+        void rightRotate(Node<T>*& node) {
 			Node<T>* left = node->left;
 			node->left = left->right;
 			if (left->right != nullptr) {
@@ -218,42 +167,210 @@ namespace Trees {
 			node->parent = left;
 		}
 
-        public:
-            RedBlackTree() : root(nullptr) {}
-            ~RedBlackTree(){
-                Tree<T>::clear(root);
+
+/*        
+        void leftRotate(Node<T>* node) {
+            Node<T>* newParent = node->right;
+            if(node == root)
+                root = newParent;
+
+            node->moveDown(newParent);
+
+            node->right = newParent->left;
+
+            if(newParent->left != nullptr)
+                newParent->left->parent = node;
+
+            newParent->left = node;
+        }
+       
+        void rightRotate(Node<T>* node) {
+            Node<T>* newParent = node->right;
+            if(node == root)
+                root = newParent;
+
+            node->moveDown(newParent);
+
+            node->left = newParent->right;
+
+            if(newParent->right != nullptr)
+                newParent->right->parent = node;
+
+            newParent->right = node;
+        }
+*/
+        void fixDoubleRed(Node<T>* node) {
+            if(node == root){
+                node->color = BLACK;
+                return;
             }
 
-            //returns true if the tree contains value
-        bool contains(const T& value) const override {
-            Node<T>* current = root;
-            while(current != nullptr) {
-                if (value == current->value) {
-                    return true;
-                } else if (value < current->value) {
-                    current = current->left;
+            Node<T>* parent = node->parent;
+            Node<T>* gparent = node->parent->parent;
+            Node<T>* uncle = node->getUncle();
+
+            if(parent->color != BLACK) {
+                if(uncle == nullptr || uncle->color == BLACK) {
+                    if(gparent != nullptr && parent == parent->parent->left) {
+                        if(node == node->parent->left) {
+                            swap(parent->color, gparent->color);
+                        } else {
+                            leftRotate(parent);
+                            swap(node->color, gparent->color);
+                        }
+                        
+                        rightRotate(gparent);
+                    } else {
+                        if(node == node->parent->left) {
+                            rightRotate(parent);
+                            swap(node->color, gparent->color);
+                        } else {
+                            swap(parent->color, gparent->color);
+                        }
+
+                        leftRotate(gparent);
+                    }
+                }
+            }
+        }
+
+        Node<T>* successor(Node<T>* node) {
+            Node<T>* temp = node;
+
+            while(temp->left != nullptr)
+                temp = temp->left;
+
+            return temp;
+        }
+
+        void fixDoubleBlack(Node<T>* node) {
+            if(node == root)
+                return;
+
+            Node<T>* sibling = node->getSibling();
+            Node<T>* parent = node->parent;
+
+            if(sibling == nullptr) {
+                fixDoubleBlack(parent);
+            } else {
+                if(sibling->color == RED){
+                    parent->color = RED;
+                    sibling->color = BLACK;
+                    if (sibling == sibling->parent->left){
+                        rightRotate(parent);
+                    } else {
+                        leftRotate(parent);
+                    }
+                    fixDoubleBlack(node);
                 } else {
-                    current = current->right;
+                    if (sibling->hasRedChild()) {
+                        if (sibling->left != nullptr && sibling->left->color == RED) {
+                            if (sibling == sibling->parent->left) {
+                                sibling->left->color = sibling->color;
+                                sibling->color = parent->color;
+                                rightRotate(parent);
+                            } else {
+                                sibling->left->color = parent->color;
+                                rightRotate(sibling);
+                                leftRotate(parent);
+                            }
+                        } else {
+                            if (sibling == sibling->parent->left) {
+                                sibling->right->color = parent->color;
+                                leftRotate(sibling);
+                                rightRotate(parent);
+                            } else {
+                                sibling->right->color = sibling->color;
+                                sibling->color = parent->color;
+                                leftRotate(parent);
+                            }
+                        }
+                        parent->color = BLACK;
+                    } else {
+                        sibling->color = RED;
+                        if(parent->color == BLACK)
+                            fixDoubleBlack(parent);
+                        else
+                            parent->color = BLACK;
+                    }
+                }
+            }
+        }
+
+        Node<T>* replaceBST(Node<T>* node) {
+            if (node->left == nullptr && node->right == nullptr)
+                return nullptr;
+
+            if (node->left != nullptr && node->right != nullptr)
+                return successor(node->right);
+
+            if (node->right != nullptr)
+                return node->right;
+            
+            return node->left;
+        }
+
+        Node<T>* search(const T& value) const {
+            Node<T>* temp = root;
+
+            while (temp != nullptr) {
+                if (value < temp->value) {
+                    if (temp->left == nullptr)
+                        break;
+                    
+                    temp = temp->left;
+                } else if (value == temp->value) {
+                    break;
+                } else {
+                    if (temp->right == nullptr)
+                        break;
+                    
+                    temp = temp->right;
                 }
             }
 
-            return false;
+            return temp;
         }
 
-        //inserts value into the tree
-        void insert(const T& value) override{
-            Node<T>* node = new Node(value, RED);
+        Node<T>* BSTInsert(Node<T>*& r, Node<T>*& value) {
+            if(r == nullptr) {
+                return value;
+            } else if(value->value < r->value) {
+                r->left = BSTInsert(r->left, value);
+                r->left->parent = r;
+            } else if (value->value > r->value) {
+                r->right = BSTInsert(r->right, value);
+                r->right->parent = r;
+            }
+
+            return r;
+        }
+
+    public:
+        
+        bool contains(const T& value) const override {
+            if (root == nullptr)
+                return false;
+
+            Node<T>* v = search(value);
+            return (v->value == value);
+        }
+        
+        void insert(const T& value) override {
+            Node<T>* node = new Node(value);
             root = BSTInsert(root, node);
             fixInsert(node);
         }
 
         void remove(const T& value) override {
-            Node<T>* node = BSTDelete(root, value);
-            if(node != nullptr) {
-            	fixDelete(node);
-            	delete node;
-            	node = nullptr;
-            }
+            if(root == nullptr)
+                return;
+
+            Node<T>* v = search(value);
+            if(v->value != value) 
+                return;
+            
+            removeHelper(v);
         }
 
         void printTree() {
@@ -267,8 +384,20 @@ namespace Trees {
         void clearTree() {
             Tree<T>::clear(root);
         }
+
     };
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 #endif

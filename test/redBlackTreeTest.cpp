@@ -94,6 +94,7 @@ namespace Tests {
         //test that deletion works on all of the RB_sorted elements
         insert_RB_sorted(test);
         for(int i : RB_sorted) {
+            std::cout << "Testing i=" << i << std::endl;
             assert((void("contains RB_sorted element prior to deletion"), test.contains(i)));
             test.remove(i);
             assert((void("nolonger contains RB_sorted element after deletion"), !test.contains(i)));

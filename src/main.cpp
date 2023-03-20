@@ -11,7 +11,8 @@ void unitTests() {
 //    Tests::binarySearchTree_printTest();
 //    Tests::binarySearchTree_runAllTests();
 
-    Tests::redBlackTree_printTest();
+//    Tests::redBlackTree_printTest();
+    Tests::redBlackTree_runAllTests();
 }
 
 

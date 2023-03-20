@@ -7,6 +7,7 @@
 
 //trees namespace
 namespace Trees {
+    /*
     //this will be used as the node object
     template <std::totally_ordered T>
     struct Node {
@@ -17,7 +18,68 @@ namespace Trees {
         Node* parent = nullptr;
         Node(const T& v) : value(v) {}
         Node(const T& v, bool c) : value(v), color(c) {} 
-    }; 
+    }; */
+
+
+    enum COLOR {
+        BLACK = 0,
+        RED = 1
+    };
+
+    template <std::totally_ordered T>
+    class Node {
+    public:
+        T value;
+        COLOR color = RED;
+      
+        Node<T> *left = nullptr;
+        Node<T> *right = nullptr;
+        Node<T> *parent = nullptr;
+
+        Node(const T& val) : value(val) {}
+
+        //returns a pointer to the node's uncle
+        Node<T>* getUncle() {
+            if (parent == nullptr || parent->parent == nullptr)
+                return nullptr;
+
+            if (parent == parent->parent->left)
+                return parent->parent->right;
+            else
+                return parent->parent->left;
+        }
+
+        Node<T>* getSibling() {
+            if(parent == nullptr)
+                return nullptr;
+
+            if(this == parent->left)
+                return parent->right;
+            
+            return parent->left;
+        }
+
+        void moveDown(Node<T>* newParent) {
+            if (parent != nullptr) {
+                if(this == parent->left)
+                    parent->left = newParent;
+                else
+                    parent->right = newParent;
+            }
+
+            newParent->parent = parent;
+            parent = newParent;
+        }
+
+        bool hasRedChild() {
+            bool l = (left != nullptr) && (left->color == RED);
+            bool r = (right != nullptr) && (right->color == RED);
+
+            return (l || r);
+        }
+    };
+
+
 
     //abstract class that contains methods required for all tree types to implement
     template <std::totally_ordered T>

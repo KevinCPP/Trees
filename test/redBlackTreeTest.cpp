@@ -165,6 +165,7 @@ namespace Tests {
         //print out the tree where RB_sorted elements were inserted
         std::cout << testName << "RB_sorted print test:" << std::endl;
         insert_RB_sorted(test);
+        test.remove(4);
         test.printTree();
         test.clearTree();
 

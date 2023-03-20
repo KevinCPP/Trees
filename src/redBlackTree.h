@@ -21,6 +21,48 @@ namespace Trees {
         
         //}
 
+        void _fixDelete(Node<T>*& x) {
+            while (x != root && x.color == BLACK) {
+                if (x == x->parent->left) {
+                    Node<T>* w = x->parent->right;
+                    //case 1:
+                    if (w->color == RED) {
+                        w->color == BLACK;
+                        x->parent->color == RED;
+                        leftRotate(x->parent);
+                        w = x->parent->right;
+                    }
+
+                    //case 2:
+                    if (w->left->color == BLACK && w->right->color == BLACK) {
+                        w->color = RED;
+                        x = x->parent;
+                    }
+                    
+                    else {
+                        //case 3:
+                        if (w->right->color == BLACK) {
+                            w->left->color = BLACK;
+                            w->color = RED;
+                            rightRotate(w);
+                            w = x->parent->right;
+                        }
+
+                        //case 4:
+                        w->color = x->parent->color;
+                        x->parent->color = BLACK;
+                        w->right->color = BLACK;
+                        leftRotate(x->parent);
+                        x = root;
+                    }
+                } else {
+                    Node<T>* w = x->parent->left;
+
+                    if(w->
+                }
+            }
+        }
+
         void fixInsert(Node<T>*& node) {
             Node<T>* parent = nullptr;
             Node<T>* gparent = nullptr;
@@ -69,6 +111,75 @@ namespace Trees {
         
         }
 
+
+        void removeNode(Node<T> *node) {
+			Node<T> *u = replaceBST(node);
+
+			bool bothBlack = ((u == nullptr || u->color == BLACK) && (node->color == BLACK));
+			Node<T> *parent = node->parent;
+
+			if (u == nullptr) {
+				// u is nullptr therefore node is leaf
+				if (node == root) {
+					// node is root, making root null
+					root = nullptr;
+				} else {
+					if (bothBlack) {
+						// u and node both black
+						// node is leaf, fix double black at node
+						fixDoubleBlack(node);
+					} else {
+						// u or node is red
+						if (node->getSibling() != nullptr)
+						// sibling is not null, make it red"
+						node->getSibling()->color = RED;
+					}
+
+					// delete node from the tree
+					if (node  == node->parent->left) {
+						parent->left = nullptr;
+					} else {
+						parent->right = nullptr;
+					}
+				}
+				delete node;
+				return;
+			}
+
+			if (node->left == nullptr || node->right == nullptr) {
+				// node has 1 child
+				if (node == root) {
+					// node is root, assign the value of u to node, and delete u
+					node->value = u->value;
+					node->left = node->right = nullptr;
+					delete u;
+				} else {
+					// Detach node from tree and move u up
+					if (node  == node->parent->left) {
+						parent->left = u;
+					} else {
+						parent->right = u;
+					}
+					
+					delete node;
+					u->parent = parent;
+					if (bothBlack) {
+						// u and node both black, fix double black at u
+						fixDoubleBlack(u);
+					} else {
+						// u or node red, color u black
+						u->color = BLACK;
+					}
+				}
+				return;
+			}
+
+			// node has 2 children, swap nodealues with successor and recurse
+			swap(u->value, node->value);
+			removeNode(u);
+		}
+
+/*
         void removeHelper(Node<T>* node) {
             Node<T>* u = replaceBST(node);
 
@@ -129,7 +240,7 @@ namespace Trees {
             swap(node->value, u->value);
             removeHelper(u);
         }
-
+*/
 
         void leftRotate(Node<T>*& node) {
 			Node<T>* right = node->right;
@@ -370,7 +481,7 @@ namespace Trees {
             if(v->value != value) 
                 return;
             
-            removeHelper(v);
+            removeNode(v);
         }
 
         void printTree() {

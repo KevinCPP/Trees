@@ -1,42 +1,19 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
 #include "binarySearchTree.h"
-
-#define UNIT_TEST
-
-
-//#ifdef UNIT_TEST
-#include "../test/tests.h"
-void unitTests() {
-//    Tests::binarySearchTree_printTest();
-//    Tests::binarySearchTree_runAllTests();
-
-//    Tests::redBlackTree_printTest();
-    Tests::redBlackTree_runAllTests();
-    Tests::binarySearchTree_runAllTests();
-}
-
+#include "redBlackTree.h"
 
 using namespace std;
 
-int main(){
+const std::string deleteNodes_dir = "data/deleteNodes.csv";
+const std::string testrandom_dir = "data/testrandom.csv";
+const std::string testBad_dir = "data/testBad.csv";
+
+void testBad() {
     
-    Trees::RedBlackTree<int> t;
+}
 
-    unitTests();
-    return 0;
-
-
-
-//    Trees::BinarySearchTree<int> t;
+int main(){ 
     
-    //test insertion:
-//    t.insert(10);
-//    t.insert(20);
-//    t.insert(5);
-//    t.insert(1);
-//    t.insert(15);
-
-//    t.printTree();
     return 0;
 }

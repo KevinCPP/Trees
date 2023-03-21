@@ -15,53 +15,7 @@ namespace Trees {
     template <std::totally_ordered T>
     class RedBlackTree : public Tree<T> {
     private:
-        Node<T> *root = nullptr;
-
-        //void insertHelper(Node<T>* node) {
-        
-        //}
-
-        void _fixDelete(Node<T>*& x) {
-            while (x != root && x.color == BLACK) {
-                if (x == x->parent->left) {
-                    Node<T>* w = x->parent->right;
-                    //case 1:
-                    if (w->color == RED) {
-                        w->color == BLACK;
-                        x->parent->color == RED;
-                        leftRotate(x->parent);
-                        w = x->parent->right;
-                    }
-
-                    //case 2:
-                    if (w->left->color == BLACK && w->right->color == BLACK) {
-                        w->color = RED;
-                        x = x->parent;
-                    }
-                    
-                    else {
-                        //case 3:
-                        if (w->right->color == BLACK) {
-                            w->left->color = BLACK;
-                            w->color = RED;
-                            rightRotate(w);
-                            w = x->parent->right;
-                        }
-
-                        //case 4:
-                        w->color = x->parent->color;
-                        x->parent->color = BLACK;
-                        w->right->color = BLACK;
-                        leftRotate(x->parent);
-                        x = root;
-                    }
-                } else {
-                    Node<T>* w = x->parent->left;
-
-                    if(w->
-                }
-            }
-        }
+        Node<T> *root = nullptr; 
 
         void fixInsert(Node<T>*& node) {
             Node<T>* parent = nullptr;
@@ -179,69 +133,6 @@ namespace Trees {
 			removeNode(u);
 		}
 
-/*
-        void removeHelper(Node<T>* node) {
-            Node<T>* u = replaceBST(node);
-
-            bool bothBlack = ((u == nullptr || u->color == BLACK) && (node->color == BLACK));
-            Node<T>* parent = node->parent;
-
-            if (u == nullptr) {
-                if (node == root) {
-                    root = nullptr;
-                } else {
-                    if (bothBlack) {
-                        fixDoubleBlack(node);
-                    } else {
-                        if (node->getSibling() != nullptr)
-                            node->getSibling()->color = RED;
-                    }
-
-                    if (node == node->parent->left) {
-                        parent->left = nullptr;
-                    } else {
-                        parent->right = nullptr;
-                    }
-                }
-
-                delete node;
-                node = nullptr;
-                return;
-            }
-
-            if (node->left == nullptr || node->right == nullptr) {
-                if (node == root) {
-                    node->value = u->value;
-                    node->left = nullptr;
-                    node->right = nullptr;
-                    delete u;
-                    u = nullptr;
-                } else {
-                    if (node == node->parent->left) {
-                        parent->left = u;
-                    } else {
-                        parent->right = u;
-                    }
-
-                    delete node;
-                    node = nullptr;
-                    u->parent = parent;
-
-                    if(bothBlack) {
-                        fixDoubleBlack(u);
-                    } else {
-                        u->color = BLACK;
-                    }
-                }
-                
-                return;
-            }
-
-            swap(node->value, u->value);
-            removeHelper(u);
-        }
-*/
-
         void leftRotate(Node<T>*& node) {
 			Node<T>* right = node->right;
 			node->right = right->left;
@@ -278,38 +169,6 @@ namespace Trees {
 			node->parent = left;
 		}
 
-
-/*        
-        void leftRotate(Node<T>* node) {
-            Node<T>* newParent = node->right;
-            if(node == root)
-                root = newParent;
-
-            node->moveDown(newParent);
-
-            node->right = newParent->left;
-
-            if(newParent->left != nullptr)
-                newParent->left->parent = node;
-
-            newParent->left = node;
-        }
-       
-        void rightRotate(Node<T>* node) {
-            Node<T>* newParent = node->right;
-            if(node == root)
-                root = newParent;
-
-            node->moveDown(newParent);
-
-            node->left = newParent->right;
-
-            if(newParent->right != nullptr)
-                newParent->right->parent = node;
-
-            newParent->right = node;
-        }
-*/
         void fixDoubleRed(Node<T>* node) {
             if(node == root){
                 node->color = BLACK;
@@ -482,6 +341,10 @@ namespace Trees {
                 return;
             
             removeNode(v);
+        }
+
+        void prinInorder() {
+            Tree<T>::printInorder(root);
         }
 
         void printTree() {

@@ -7,19 +7,6 @@
 
 //trees namespace
 namespace Trees {
-    /*
-    //this will be used as the node object
-    template <std::totally_ordered T>
-    struct Node {
-        T value;
-        bool color = false;
-        Node* left = nullptr;
-        Node* right = nullptr;
-        Node* parent = nullptr;
-        Node(const T& v) : value(v) {}
-        Node(const T& v, bool c) : value(v), color(c) {} 
-    }; */
-
 
     enum COLOR {
         BLACK = 0,
@@ -125,6 +112,15 @@ namespace Trees {
 
             //return the maximum height
             return (1 + (l > r ? l : r));
+        }
+
+        void printInorder(Node<T>* root) const {
+            if(root == nullptr)
+                return;
+
+            printInorder(root->left);
+            std::cout << root->data << " ";
+            printInorder(root->right);
         }
 
         virtual void clear(Node<T>*& root) {

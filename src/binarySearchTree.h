@@ -104,6 +104,10 @@ namespace Trees {
             root = removeHelper(root, value);
         }
 
+        void inorderPrintTree() {
+            Tree<T>::printInorder(root);
+        }
+
         void printTree() {
             Tree<T>::print(root, 4);
         }

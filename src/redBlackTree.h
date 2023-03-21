@@ -343,7 +343,7 @@ namespace Trees {
             removeNode(v);
         }
 
-        void prinInorder() {
+        void inorderPrintTree() {
             Tree<T>::printInorder(root);
         }
 

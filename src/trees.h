@@ -119,7 +119,7 @@ namespace Trees {
                 return;
 
             printInorder(root->left);
-            std::cout << root->data << " ";
+            std::cout << root->value << " ";
             printInorder(root->right);
         }
 

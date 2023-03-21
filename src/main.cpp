@@ -51,7 +51,7 @@ void testBST(std::string insertions_dir, std::string deletions_dir) {
         test.insert(i);
     }
 
-    std::cout << "BST (" << insertions_dir << ") before deletion: ";
+    std::cout << "BST (" << insertions_dir << ") (height: " << test.getHeight() << ") before deletion: ";
     test.inorderPrintTree();
     std::cout << std::endl;
 
@@ -59,7 +59,7 @@ void testBST(std::string insertions_dir, std::string deletions_dir) {
         test.remove(i);
     }
 
-    std::cout << "BST (" << insertions_dir << ") after deletion: ";
+    std::cout << "BST (" << insertions_dir << ") (height: " << test.getHeight() << ") after deletion: ";
     test.inorderPrintTree();
     std::cout << std::endl;
 }
@@ -71,7 +71,7 @@ void testRBT(std::string insertions_dir, std::string deletions_dir) {
         test.insert(i);
     }
 
-    std::cout << "RBT (" << insertions_dir << ") before deletion: ";
+    std::cout << "RBT (" << insertions_dir << ") (height: " << test.getHeight() << ") before deletion: ";
     test.inorderPrintTree();
     std::cout << std::endl;
 
@@ -79,7 +79,7 @@ void testRBT(std::string insertions_dir, std::string deletions_dir) {
         test.remove(i);
     }
 
-    std::cout << "RBT (" << insertions_dir << ") after deletion: ";
+    std::cout << "RBT (" << insertions_dir << ") (height: " << test.getHeight() << ") after deletion: ";
     test.inorderPrintTree();
     std::cout << std::endl;
 }
